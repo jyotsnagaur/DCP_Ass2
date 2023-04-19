@@ -1,12 +1,13 @@
 
 #install.packages("rvest")
+#install.packages("stringr")
 
 # load library
 library(tidyverse)
 library(rvest)
+library(stringr)
 
-
-# ************************  PART1 ************************
+# ******************************  PART1 ****************************************
 
 
 # -----------------------------QUESTION 1---------------------------------------
@@ -23,6 +24,28 @@ table_legend <- html %>% html_nodes ('dl') %>%
 
 print(table_legend) 
 
+required <- table_legend[2]
+
+# remove \n next to parenthesis
+required <- gsub("\n","",required)
+
+required
+
+#remove empty spaces
+required <- gsub("\\h+", " ", required, perl=TRUE)  #\h is shorthand to match any horizontal whitespaces
+required <- str_trim(required)
+required
+
+# split the single string into multiple strings using the new lines (\n)
+my_table <- strsplit(required,"\\n")
+my_table
+
+
+# convert string to a table
+my_table <- matrix(unlist(my_table), ncol=2, byrow = TRUE)
+View(my_table)
+
+
 # -----------------------------QUESTION 3---------------------------------------
 tables <- html %>% html_table(fill = TRUE)
 
@@ -33,3 +56,10 @@ table <- tables[[2]]
 print(table)
 
 # -----------------------------QUESTION 4---------------------------------------
+
+
+
+
+
+
+
