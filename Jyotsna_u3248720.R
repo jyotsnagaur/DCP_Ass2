@@ -1,18 +1,35 @@
-# Load required packages
-library(rvest)
-library(dplyr)
 
+#install.packages("rvest")
+
+# load library
+library(tidyverse)
+library(rvest)
+
+
+# ************************  PART1 ************************
+
+
+# -----------------------------QUESTION 1---------------------------------------
 # Specify the URL to scrape
 url <- "https://en.wikipedia.org/wiki/List_of_World_Heritage_in_Danger"
 
-# Read the HTML content from the URL
 html <- read_html(url)
 
-# Extract the table from the HTML content
-table <- html %>%
-  html_nodes("table") %>%  # select all tables on the page
-  .[[1]] %>%  # select the first table
-  html_table(fill = TRUE)  # convert the table to a data frame
+# -----------------------------QUESTION 2---------------------------------------
 
-# Print the resulting data frame
+
+table_legend <- html %>% html_nodes ('dl') %>% 
+  html_text () 
+
+print(table_legend) 
+
+# -----------------------------QUESTION 3---------------------------------------
+tables <- html %>% html_table(fill = TRUE)
+
+
+table <- tables[[2]]
+
+
 print(table)
+
+# -----------------------------QUESTION 4---------------------------------------
