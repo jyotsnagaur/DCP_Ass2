@@ -56,8 +56,29 @@ table <- tables[[2]]
 print(table)
 
 # -----------------------------QUESTION 4---------------------------------------
+#Scrape all available hyperlinks in the url.
+
+# installing packages
+install.packages("httr")
+install.packages("XML")
+
+# importing packages
+library(httr)
+library(XML)
 
 
+# making http request
+resource <- get(url)
+
+# converting all the data to HTML format
+parse < -htmlParse(resource)
+
+# scrapping all the href tags
+links < -xpathSApply(parse, path="//a", xmlGetAttr, "href")
+
+# printing links
+print(links)
+#--
 
 
 
