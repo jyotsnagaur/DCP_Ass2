@@ -39,9 +39,12 @@ View(my_table)
 
 
 # removing superscript text in square brackets
-r1 <- my_table[1,]
-r1[[3]]
 
+nchar(my_table[1,])
+my_table[1,] <- substring(my_table[1,],1,47)
+
+nchar(my_table[2,])
+my_table[2,] <- substring(my_table[2,],1,95)
 
 # change row names
 
