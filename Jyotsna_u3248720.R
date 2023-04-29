@@ -32,24 +32,25 @@ required <- table_legend[2]
 my_table <- strsplit(required,"\\n")
 my_table
 
-# removing superscript text in square brackets
-r1 <- my_table[[1]]
-r1
-
-#remove empty spaces
-required <- gsub("\\h+", " ", required, perl=TRUE)  #\h is shorthand to match any horizontal whitespaces
-required <- str_trim(required)
-required
-
-
-
 
 # convert string to a table
 my_table <- matrix(unlist(my_table), ncol=1, byrow = TRUE)
 View(my_table)
 
 
+# removing superscript text in square brackets
+r1 <- my_table[1,]
+r1[[3]]
+
+
 # change row names
+
+
+
+
+
+
+
 
 
 # -----------------------------QUESTION 3---------------------------------------
