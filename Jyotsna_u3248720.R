@@ -26,24 +26,30 @@ print(table_legend)
 
 required <- table_legend[2]
 
-# remove \n next to parenthesis
-required <- gsub("\n","",required)
 
-required
+
+# split the single string into multiple strings using the new lines (\n)
+my_table <- strsplit(required,"\\n")
+my_table
+
+# removing superscript text in square brackets
+r1 <- my_table[[1]]
+r1
 
 #remove empty spaces
 required <- gsub("\\h+", " ", required, perl=TRUE)  #\h is shorthand to match any horizontal whitespaces
 required <- str_trim(required)
 required
 
-# split the single string into multiple strings using the new lines (\n)
-my_table <- strsplit(required,"\\n")
-my_table
+
 
 
 # convert string to a table
-my_table <- matrix(unlist(my_table), ncol=2, byrow = TRUE)
+my_table <- matrix(unlist(my_table), ncol=1, byrow = TRUE)
 View(my_table)
+
+
+# change row names
 
 
 # -----------------------------QUESTION 3---------------------------------------
