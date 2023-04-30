@@ -1,6 +1,6 @@
-
+#install.packages("tidyverse")
 #install.packages("rvest")
-#install.packages("stringr")
+install.packages("stringr")
 
 # load library
 library(tidyverse)
@@ -46,10 +46,26 @@ my_table[1,] <- substring(my_table[1,],1,47)
 nchar(my_table[2,])
 my_table[2,] <- substring(my_table[2,],1,95)
 
-# change row names
+# change row names using stringr::word
 
+rownames(my_table) <- word(my_table[,1], 1)
 
+#remove first word of observations using regular expression
+# ^ is an anchor that matches the beginning of the string.
+#\\w+ matches one or more word characters (letters, digits, or underscores).
+#: matches the colon character.
+#\\s matches empty space in the beginning
 
+my_table[,1] <- sub("^\\w+:\\s", "", my_table[,1])
+my_table
+#CHK THIS-------------------------------------------------------------------------------
+input_string <- "Name: as listed by the World Heritage Committee"
+
+# remove the first word
+output_string <- str_replace(input_string, "^\\w+:\\s", "")
+
+# print the updated string
+print(output_string)
 
 
 
