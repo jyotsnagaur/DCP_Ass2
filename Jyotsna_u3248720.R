@@ -1,6 +1,27 @@
+
+# Assignment 2: Web Scraping and Data Analysis in R
+# subject name: 11520G Data Capture and Preparations
+# created by: Jyotsna, ID: u3248720
+
+# ---------------------------Data description:----------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+# ------------------------------------------------------------------------------
+#Load following packages to proceed
+
 #install.packages("tidyverse")
 #install.packages("rvest")
-install.packages("stringr")
+#install.packages("stringr")
 
 # load library
 library(tidyverse)
