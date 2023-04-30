@@ -11,13 +11,15 @@ library(stringr)
 
 
 # -----------------------------QUESTION 1---------------------------------------
+#Q1 Retrieve and load all the data from the url into R
+
 # Specify the URL to scrape
 url <- "https://en.wikipedia.org/wiki/List_of_World_Heritage_in_Danger"
 
 html <- read_html(url)
 
 # -----------------------------QUESTION 2---------------------------------------
-
+#Q2 Obtain the table legend and store all its elements.
 
 table_legend <- html %>% html_nodes ('dl') %>% 
   html_text () 
@@ -73,6 +75,10 @@ print(output_string)
 
 
 # -----------------------------QUESTION 3---------------------------------------
+#Q3 Scrape the endangered list, which contains the current listed sites.
+
+
+
 tables <- html %>% html_table(fill = TRUE)
 
 
@@ -83,10 +89,6 @@ print(table)
 
 # -----------------------------QUESTION 4---------------------------------------
 #Scrape all available hyperlinks in the url.
-
-# installing packages
-install.packages("httr")
-install.packages("XML")
 
 # importing packages
 library(httr)
