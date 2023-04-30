@@ -1,19 +1,20 @@
 
-# Assignment 2: Web Scraping and Data Analysis in R
+# Assignment 2: Web Scraping, Data Cleaning and Analysis in R
 # subject name: 11520G Data Capture and Preparations
 # created by: Jyotsna, ID: u3248720
 
 # ---------------------------Data description:----------------------------------
 
-
-
-
-
-
-
-
-
-
+# For this assignment we need to collect specific data from the United Nations
+# Educational, Scientific and Cultural Organisation (UNESCO). This organisation
+# supports the preservation of the world’s natural and cultural heritage.
+# As of today (April 2022), there are more than 1100 heritage sites around the
+# world, most of which are man-made like the Acropolis of Athens or the Taj
+# Mahal in India, but also natural sites like the Great Barrier Reef here in
+# Australia are listed. Unfortunately, some of the sites in the list are
+# threatened by human intervention or natural reasons. We want to know more
+# about the endangered sites, their location, and the reasons that put a site
+# at risk.
 
 
 # ------------------------------------------------------------------------------
