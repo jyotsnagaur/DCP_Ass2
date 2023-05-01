@@ -311,15 +311,21 @@ print(c_cultural[which.max(c_cultural$n),])
 
 # -----------------------------QUESTION 2---------------------------------------
 
-# Q2 What site has the largest area (in m2 ) and what site has the smallest area (in m2)
+# Q2 What site has the largest area (in m2 ) and what site has the smallest area 
 
+sqm_area <- list()
+for (i in seq_along(endangered_table$`Area(acre)`)){
+  sqm_area[i] <- round((4046.86 * endangered_table$`Area(acre)`[i]),2)
+  
+}
+sqm_area
+print(data.frame(endangered_table$Name[which.max(sqm_area)],sqm_area[which.max(sqm_area)]))
 
+print(data.frame(endangered_table$Name[which.min(sqm_area)],sqm_area[which.min(sqm_area)]))
 
+#CHK THE DECIMAL VALUES ABOVE-----------------------------------------------------------------------------
 
+# -----------------------------QUESTION 3---------------------------------------
 
-
-
-
-
-
+# Q3
 
