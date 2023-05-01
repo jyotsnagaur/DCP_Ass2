@@ -110,7 +110,7 @@ table <- tables[[2]]
 print(table)
 
 # -----------------------------QUESTION 4---------------------------------------
-#Scrape all available hyperlinks in the url.
+#Q4 Scrape all available hyperlinks in the url.
 
 all_url <- html %>%
   html_nodes("a") %>%
@@ -127,7 +127,7 @@ scrape_all <- data.frame(CONTENT = link_text, URL = all_url)
 
 
 # -----------------------------QUESTION 5---------------------------------------
-
+#Q5 
 
 
 
