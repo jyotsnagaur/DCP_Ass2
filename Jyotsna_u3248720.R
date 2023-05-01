@@ -65,10 +65,10 @@ View(my_table)
 # removing superscript text in square brackets
 
 nchar(my_table[1,])
-my_table[1,] <- substring(my_table[1,],1,47)
+my_table[1,] <- substring(my_table[1,],1,47) #nchar-4
 
 nchar(my_table[2,])
-my_table[2,] <- substring(my_table[2,],1,95)
+my_table[2,] <- substring(my_table[2,],1,95) #nchar-6
 
 # change row names using stringr::word
 
@@ -112,27 +112,27 @@ print(table)
 # -----------------------------QUESTION 4---------------------------------------
 #Scrape all available hyperlinks in the url.
 
-# importing packages
-library(httr)
-library(XML)
+all_url <- html %>%
+  html_nodes("a") %>%
+  html_attr("href")
 
 
-# making http request
-resource <- get(url)
+# Extract the link text
+link_text <- html %>%
+  html_nodes("a") %>%
+  html_text()
 
-# converting all the data to HTML format
-parse < -htmlParse(resource)
 
-# scrapping all the href tags
-links < -xpathSApply(parse, path="//a", xmlGetAttr, "href")
-
-# printing links
-print(links)
-#-----
-
+scrape_all <- data.frame(CONTENT = link_text, URL = all_url)
 
 
 # -----------------------------QUESTION 5---------------------------------------
+
+
+
+
+
+
 
 # -----------------------------QUESTION 6---------------------------------------
 
