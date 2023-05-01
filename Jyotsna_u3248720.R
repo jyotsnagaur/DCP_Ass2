@@ -196,7 +196,7 @@ view(endangered_table)
 # -----------------------------QUESTION 2---------------------------------------
 
 # Q2 obtain the country from the “Location” variable. Using computational methods
-#(e.g., Regex) fix any inconsistencies in the variable and then extract the country only.
+# (e.g., Regex) fix any inconsistencies in the variable and then extract the country only.
 
 # ASK K-----------------------------------------------------------------------------------------------------
 # split the string by comma
@@ -212,24 +212,23 @@ view(second_word)
 endangered_table$Location[1] <- gsub("\\d+°\\d+′\\d+\\.\\d+″[NS]\\s+\\d+°\\d+′\\d+\\.\\d+″[EW]", "", endangered_table$Location[1])
 view(endangered_table$Location[1])
 
-for (i in nrow(endangered_table)){
+for (i in nrow(endangered_table)) {
   endangered_table$Location[i] <- gsub("\\d+°\\d+′\\d+\\.\\d+″[NS]\\s+\\d+°\\d+′\\d+\\.\\d+″[EW]", "", endangered_table$Location[i])
 }
 
 # -----------------------------QUESTION 3---------------------------------------
 
-# Q3 Using computational methods (Regex), split the variable that contains the criteria 
-# (“Criteria”) into two variables: 
+# Q3 Using computational methods (Regex), split the variable that contains the criteria
+# (“Criteria”) into two variables:
 # “Type” (cultural/natural) and “Criteria” (containing roman numbers)
 
 new_col <- list()
 
-for (i in seq_along(endangered_table)){
+for (i in seq_along(endangered_table)) {
   # Split the 'my_column' column into 'col1' and 'col2' columns using a colon as the separator
   new_col[[i]] <- str_split_fixed(endangered_table$Criteria[i], ":", 2)
   endangered_table$Type[i] <- new_col[[i]][, 1]
   endangered_table$roman[i] <- new_col[[i]][, 2]
-  
 }
 
 
@@ -244,47 +243,61 @@ colnames(endangered_table)[which(colnames(endangered_table) == "roman")] <- "Cri
 
 # -----------------------------QUESTION 4---------------------------------------
 
-# Q4 maintain only the data in acres and remove the hectares (ha) from the “Area” 
+# Q4 maintain only the data in acres and remove the hectares (ha) from the “Area”
 # variable.
 
-for (i in seq_along(endangered_table$`Areaha (acre)`)){
+for (i in seq_along(endangered_table$`Areaha (acre)`)) {
   # replace missing values with NA
-  endangered_table$`Areaha (acre)`[i] <- gsub("—","NA",endangered_table$`Areaha (acre)`[i])
+  endangered_table$`Areaha (acre)`[i] <- gsub("—", "NA", endangered_table$`Areaha (acre)`[i])
   # keep only text within bracket which has acre values
-  if (!is.na(endangered_table$`Areaha (acre)`[i])){
+  if (!is.na(endangered_table$`Areaha (acre)`[i])) {
     endangered_table$`Areaha (acre)`[i] <- sub("^[^(]*\\(", "(", endangered_table$`Areaha (acre)`[i])
-    #remove brackets from the values
-    endangered_table$`Areaha (acre)`[i] <-substring(endangered_table$`Areaha (acre)`[i], 2, nchar(endangered_table$`Areaha (acre)`[i])-1)
-    #WHY DID NA DISAPPER----------------------------------------------------------------------------------------------------------------------
+    # remove brackets from the values
+    endangered_table$`Areaha (acre)`[i] <- substring(endangered_table$`Areaha (acre)`[i], 2, nchar(endangered_table$`Areaha (acre)`[i]) - 1)
+    # WHY DID NA DISAPPER----------------------------------------------------------------------------------------------------------------------
   }
-  
 }
 
 endangered_table
 
-#out of loop-change column name
+# out of loop-change column name
 names(endangered_table)[names(endangered_table) == "Areaha (acre)"] <- "Area(acre)"
 
 # -----------------------------QUESTION 5---------------------------------------
 
-# Q5 Using computational methods (Regex), clean the variable Endangered and maintain 
+# Q5 Using computational methods (Regex), clean the variable Endangered and maintain
 # only the very last year
 
 
-for (i in seq_along(endangered_table$Endangered)){
+for (i in seq_along(endangered_table$Endangered)) {
   # remove values before comma
-  endangered_table$Endangered[i] <- gsub("^[^,]*,", "",endangered_table$Endangered[i])
+  endangered_table$Endangered[i] <- gsub("^[^,]*,", "", endangered_table$Endangered[i])
   # remove the dash after the values
-  endangered_table$Endangered[i] <- gsub("–","",endangered_table$Endangered[i])
+  endangered_table$Endangered[i] <- gsub("–", "", endangered_table$Endangered[i])
   # remove empty spaces before the values
-  endangered_table$Endangered[i] <- gsub("\\s+(\\d)", "(\\d)", endangered_table$Endangered[i])
-  #2 DIGITS DISAPPER----------------------------------------------------------------------------------------------------------------------
- 
+  # endangered_table$Endangered[i] <- gsub("\\s+(\\d)", "(\\d)", endangered_table$Endangered[i])
+  # 2 DIGITS DISAPPER----------------------------------------------------------------------------------------------------------------------
 }
 
 # -----------------------------QUESTION 6---------------------------------------
 
 # Q6 Make sure that you have numeric vectors and characters vectors only
+
+#checking class of each column
+for (i in seq_along(endangered_table)){
+  print(class(endangered_table[[i]]))
+}
+
+
+# there are 3 columns with numeric type-Area, Year,Endangered
+for (i in c(3,4,5)){
+  endangered_table[[i]] <- as.numeric(endangered_table[[i]])
+}
+
+
+
+
+
 
 
 
