@@ -38,12 +38,12 @@ library(stringr)
 # Specify the URL to scrape
 url <- "https://en.wikipedia.org/wiki/List_of_World_Heritage_in_Danger"
 
-html <- read_html(url)
+webpage <- read_html(url)
 
 # -----------------------------QUESTION 2---------------------------------------
 #Q2 Obtain the table legend and store all its elements.
 
-table_legend <- html %>% html_nodes ('dl') %>% 
+table_legend <- webpage %>% html_nodes ('dl') %>% 
   html_text () 
 
 print(table_legend) 
@@ -101,7 +101,7 @@ print(output_string)
 
 
 
-tables <- html %>% html_table(fill = TRUE)
+tables <- webpage %>% html_table(fill = TRUE)
 
 
 endangered_table <- tables[[2]]
@@ -112,13 +112,13 @@ print(endangered_table)
 # -----------------------------QUESTION 4---------------------------------------
 #Q4 Scrape all available hyperlinks in the url.
 
-all_url <- html %>%
+all_url <- webpage %>%
   html_nodes("a") %>%
   html_attr("href")
 
 
 # Extract the link text
-link_text <- html %>%
+link_text <- webpage %>%
   html_nodes("a") %>%
   html_text()
 
@@ -130,14 +130,54 @@ scrape_all <- data.frame(CONTENT = link_text, URL = all_url)
 #Q5 Using computational methods, obtain the hyperlink that you can click on to 
 # jump to a new page that contains the selection criteria
 
+req_index <- which(grepl("Criteria",scrape_all$CONTENT))
+req_list <- scrape_all[req_index,]
+#CHK THIS-------------------------------------------------------------------------------
+hyperlink_criteria <- req_list[1,2]
+hyperlink_criteria <- paste0("https://en.wikipedia.org", hyperlink_criteria)
+
+#problem is that same text gets pasted repeatedly everytime me run the above line 
 
 
+#CHK THIS-------------------------------------------------------------------------------
+req_index <- list()
+req_link <- list()
+
+for (i in 1:nrow(scrape_all)){
+  req_index[[i]] <- which(grepl("Criteria",scrape_all$CONTENT))
+  #req_link[i] <- scrape_all$URL[req_index]
+}
 
 
 
 # -----------------------------QUESTION 6---------------------------------------
 
-# -----------------------------QUESTION 7---------------------------------------
+#Q6 Use the hyperlink obtained in the previous step and scrape the two lists 
+#(cultural and natural) and store them in two data structures within a list
+
+criteria_page <- read_html(hyperlink_criteria)
+
+
+all_text <- list()
+selection_criteria <- list()
+for (i in 1:2){
+  all_text <- criteria_page %>% html_nodes ('ol') %>% 
+    html_text () 
+  selection_criteria[[i]]<-all_text[i]
+  #splitting the strings
+  selection_criteria[[i]] <- strsplit(selection_criteria[[i]],"\\n")
+  #convert to matrix table
+  selection_criteria[[i]] <- matrix(unlist(selection_criteria[[i]]), ncol=1, byrow = TRUE)
+}
+
+#checking the tables obtained
+view(selection_criteria[[1]])
+
+#DOES THIS NEED FURTHER CLEANING?--------------------------------------------------------------
+
+
+# ******************************  PART2 ****************************************
+# -----------------------------QUESTION 1---------------------------------------
 
 
 
