@@ -53,26 +53,26 @@ required <- table_legend[2]
 
 
 # split the single string into multiple strings using the new lines (\n)
-my_table <- strsplit(required,"\\n")
-my_table
+legend_table <- strsplit(required,"\\n")
+legend_table
 
 
 # convert string to a table
-my_table <- matrix(unlist(my_table), ncol=1, byrow = TRUE)
-View(my_table)
+legend_table <- matrix(unlist(legend_table), ncol=1, byrow = TRUE)
+View(legend_table)
 
 
 # removing superscript text in square brackets
 
-nchar(my_table[1,])
-my_table[1,] <- substring(my_table[1,],1,47) #nchar-4
+nchar(legend_table[1,])
+legend_table[1,] <- substring(legend_table[1,],1,47) #nchar-4
 
-nchar(my_table[2,])
-my_table[2,] <- substring(my_table[2,],1,95) #nchar-6
+nchar(legend_table[2,])
+legend_table[2,] <- substring(legend_table[2,],1,95) #nchar-6
 
 # change row names using stringr::word
 
-rownames(my_table) <- word(my_table[,1], 1)
+rownames(legend_table) <- word(legend_table[,1], 1)
 
 #remove first word of observations using regular expression
 # ^ is an anchor that matches the beginning of the string.
@@ -80,8 +80,8 @@ rownames(my_table) <- word(my_table[,1], 1)
 #: matches the colon character.
 #\\s matches empty space in the beginning
 
-my_table[,1] <- sub("^\\w+:\\s", "", my_table[,1])
-my_table
+legend_table[,1] <- sub("^\\w+:\\s", "", legend_table[,1])
+legend_table
 #CHK THIS-------------------------------------------------------------------------------
 input_string <- "Name: as listed by the World Heritage Committee"
 
@@ -104,10 +104,10 @@ print(output_string)
 tables <- html %>% html_table(fill = TRUE)
 
 
-table <- tables[[2]]
+endangered_table <- tables[[2]]
 
 
-print(table)
+print(endangered_table)
 
 # -----------------------------QUESTION 4---------------------------------------
 #Q4 Scrape all available hyperlinks in the url.
@@ -122,12 +122,13 @@ link_text <- html %>%
   html_nodes("a") %>%
   html_text()
 
-
+#CHK THIS-------------------------------------------------------------------------------
 scrape_all <- data.frame(CONTENT = link_text, URL = all_url)
 
 
 # -----------------------------QUESTION 5---------------------------------------
-#Q5 
+#Q5 Using computational methods, obtain the hyperlink that you can click on to 
+# jump to a new page that contains the selection criteria
 
 
 
