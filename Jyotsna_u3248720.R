@@ -327,5 +327,29 @@ print(data.frame(endangered_table$Name[which.min(sqm_area)],sqm_area[which.min(s
 
 # -----------------------------QUESTION 3---------------------------------------
 
-# Q3
+# Q3 What is the frequency (in years) with which sites were put on endangered 
+# list-plot
+
+# -----------------------------QUESTION 4---------------------------------------
+
+# Q4 What country has more sites in the list? how many sites has each country?
+
+# -----------------------------QUESTION 5---------------------------------------
+
+# Q5 How long took each site to be in the endangered list
+
+
+# -----------------------------QUESTION 6---------------------------------------
+
+# Q6 What is the frequency with which sites were put on the endangered list after
+# they were inscribed in the World Heritage List-plot
+
+
+
+
+
+
+
+
+
 
