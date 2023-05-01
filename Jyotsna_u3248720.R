@@ -189,8 +189,15 @@ view(selection_criteria[[1]])
 # Q1 From the table containing the endangered sites, remove the undesired variables:
 # Image and Refs.
 
+endangered_table <- endangered_table[, -which(names(endangered_table) %in% c("Image", "Refs"))]
 
-
-
+view(endangered_table)
 
 # --------------------------------------------------------------------
+
+
+
+
+
+
+
