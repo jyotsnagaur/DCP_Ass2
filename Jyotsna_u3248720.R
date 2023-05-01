@@ -193,11 +193,31 @@ endangered_table <- endangered_table[, -which(names(endangered_table) %in% c("Im
 
 view(endangered_table)
 
-# --------------------------------------------------------------------
+# -----------------------------QUESTION 2---------------------------------------
+
+# Q2 obtain the country from the “Location” variable. Using computational methods
+#(e.g., Regex) fix any inconsistencies in the variable and then extract the country only.
+
+# ASK-----------------------------------------------------------------------------------------------------
+# split the string by comma
+my_list <- strsplit(endangered_table$Location[1], ",")[[1]]
+view(my_list)
+
+# extract the second word after the comma
+second_word <- trimws(strsplit(my_list[2], " ")[[1]][2])
+view(second_word)
 
 
 
+endangered_table$Location[1] <- gsub("\\d+°\\d+′\\d+\\.\\d+″[NS]\\s+\\d+°\\d+′\\d+\\.\\d+″[EW]", "", endangered_table$Location[1])
+view(endangered_table$Location[1])
 
+for (i in nrow(endangered_table)){
+  endangered_table$Location[i] <- gsub("\\d+°\\d+′\\d+\\.\\d+″[NS]\\s+\\d+°\\d+′\\d+\\.\\d+″[EW]", "", endangered_table$Location[i])
+}
 
+# -----------------------------QUESTION 3---------------------------------------
 
+# Q3 From the table containing the endangered sites, remove the undesired variables:
+# Image and Refs.
 
