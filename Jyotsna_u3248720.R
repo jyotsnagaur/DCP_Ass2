@@ -294,6 +294,24 @@ for (i in c(3,4,5)){
   endangered_table[[i]] <- as.numeric(endangered_table[[i]])
 }
 
+# ******************************  PART3 ****************************************
+# -----------------------------QUESTION 1---------------------------------------
+
+# Q1 What type of site (cultural or natural) is the most common in the endangered
+# list and how many does each type of site have?
+
+#counting the number for all cultural and natural sites
+
+c_cultural <- count(endangered_table, Type)
+print(c_cultural)
+
+#checking the most common for all cultural and natural sites
+
+
+# -----------------------------QUESTION 2---------------------------------------
+
+# Q2
+
 
 
 
