@@ -218,6 +218,40 @@ for (i in nrow(endangered_table)){
 
 # -----------------------------QUESTION 3---------------------------------------
 
-# Q3 From the table containing the endangered sites, remove the undesired variables:
-# Image and Refs.
+# Q3 Using computational methods (Regex), split the variable that contains the criteria 
+# (“Criteria”) into two variables: 
+# “Type” (cultural/natural) and “Criteria” (containing roman numbers)
+
+new_col <- list()
+
+for (i in seq_along(endangered_table)){
+  # Split the 'my_column' column into 'col1' and 'col2' columns using a colon as the separator
+  new_col[[i]] <- str_split_fixed(endangered_table$Criteria[i], ":", 2)
+  endangered_table$Type[i] <- new_col[[i]][, 1]
+  endangered_table$roman[i] <- new_col[[i]][, 2]
+  
+}
+
+
+# Out of loop-Remove the original column
+endangered_table$Criteria <- NULL
+
+
+
+# Out of loop- Rename roman column to criteria
+colnames(endangered_table)[which(colnames(endangered_table) == "roman")] <- "Criteria"
+
+
+# -----------------------------QUESTION 3---------------------------------------
+
+# Q4
+
+
+
+
+
+
+
+
+
 
