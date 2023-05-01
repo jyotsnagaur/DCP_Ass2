@@ -306,11 +306,12 @@ c_cultural <- count(endangered_table, Type)
 print(c_cultural)
 
 #checking the most common for all cultural and natural sites
-
+which.max(c_cultural$n)
+print(c_cultural[which.max(c_cultural$n),])
 
 # -----------------------------QUESTION 2---------------------------------------
 
-# Q2
+# Q2 What site has the largest area (in m2 ) and what site has the smallest area (in m2)
 
 
 
