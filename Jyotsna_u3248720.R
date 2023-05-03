@@ -198,23 +198,35 @@ view(endangered_table)
 # Q2 obtain the country from the “Location” variable. Using computational methods
 # (e.g., Regex) fix any inconsistencies in the variable and then extract the country only.
 
-# ASK K-----------------------------------------------------------------------------------------------------
-# split the string by comma
-my_list <- strsplit(endangered_table$Location[1], ",")[[1]]
-view(my_list)
+#Step-1: remove all characters occuring after a digit using gsub and lookbehind
+#(?<=\\d) is a positive lookbehind that matches any character that is preceded by a digit.
+#perl=TRUE in gsub to enable the use of lookbehind
 
-# extract the second word after the comma
-second_word <- trimws(strsplit(my_list[2], " ")[[1]][2])
-view(second_word)
+
+endangered_table$Location <- gsub("(?<=\\d).*", "", endangered_table$Location, perl=TRUE)
 
 
 
-endangered_table$Location[1] <- gsub("\\d+°\\d+′\\d+\\.\\d+″[NS]\\s+\\d+°\\d+′\\d+\\.\\d+″[EW]", "", endangered_table$Location[1])
-view(endangered_table$Location[1])
+#Step-2: remove the last character containing the digit which was used in step-1
+endangered_table$Location <- str_sub(endangered_table$Location, end = -2)
 
-for (i in nrow(endangered_table)) {
-  endangered_table$Location[i] <- gsub("\\d+°\\d+′\\d+\\.\\d+″[NS]\\s+\\d+°\\d+′\\d+\\.\\d+″[EW]", "", endangered_table$Location[i])
-}
+
+#Step-3: Fix exceptions in rows 1 and 48
+
+
+
+#Step-3: remove all characters occuring before the comma using gsub and lookahead
+
+endangered_table$Location <- gsub(".*(?=,)", "", endangered_table$Location, perl=TRUE) 
+
+#Step-4: Removing the comma
+
+
+
+#Step-5: Trimming the whitespaces
+
+#Step-6: Fixing the exceptions
+
 
 # -----------------------------QUESTION 3---------------------------------------
 
@@ -248,7 +260,7 @@ colnames(endangered_table)[which(colnames(endangered_table) == "roman")] <- "Cri
 
 for (i in seq_along(endangered_table$`Areaha (acre)`)) {
   # replace missing values with NA
-  endangered_table$`Areaha (acre)`[i] <- gsub("—", "NA", endangered_table$`Areaha (acre)`[i])
+  endangered_table$`Areaha (acre)`[i] <- gsub("—", NA, endangered_table$`Areaha (acre)`[i])
   # keep only text within bracket which has acre values
   if (!is.na(endangered_table$`Areaha (acre)`[i])) {
     endangered_table$`Areaha (acre)`[i] <- sub("^[^(]*\\(", "(", endangered_table$`Areaha (acre)`[i])
