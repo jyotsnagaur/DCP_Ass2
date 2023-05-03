@@ -366,6 +366,26 @@ print(data.frame(endangered_table$Name[which.min(sqm_area)], sqm_area[which.min(
 # Q3 What is the frequency (in years) with which sites were put on endangered 
 # list-plot
 
+# Install and load ggplot2
+install.packages("ggplot2")                          
+library("ggplot2")
+
+
+#preparing data
+site_yr <- data.frame(x = endangered_table$Endangered )
+
+min(site_yr$x)
+max(site_yr$x)
+
+ggplot(site_yr, aes(x = x)) + 
+  geom_histogram(col = "black", fill = "pink", binwidth = 5) +
+  xlim(min(site_yr$x), max(site_yr$x)) +
+  labs(
+    title = "Frequency (in years) distribution of sites put on endangered list",
+    x = "Year",
+    y = "Count of Values"
+  )
+
 
 
 
@@ -378,7 +398,7 @@ print(data.frame(endangered_table$Name[which.min(sqm_area)], sqm_area[which.min(
 c_country <- count(endangered_table, Location)
 print(c_country, n=34)
 
-#checking the most common for all cultural and natural sites
+#checking the max count for country
 which.max(c_country$n)
 print(c_country[which.max(c_country$n),])
 
