@@ -391,7 +391,7 @@ print(c_country[which.max(c_country$n),])
 
 time_taken <- data.frame("Site" = endangered_table$Name, "Time_taken(yrs)"=endangered_table$Endangered-endangered_table$`Year (WHS)`)
 
-
+print(time_taken[which.max(time_taken$Time_taken.yrs.),])
 
 
 
