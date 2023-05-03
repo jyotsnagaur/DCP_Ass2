@@ -377,6 +377,8 @@ site_yr <- data.frame(x = endangered_table$Endangered )
 min(site_yr$x)
 max(site_yr$x)
 
+#labels_plot <- c("1982","1987","1992","1997","2002","2007","2013","2018","2023")
+
 ggplot(site_yr, aes(x = x)) + 
   geom_histogram(col = "black", fill = "pink", binwidth = 5) +
   xlim(min(site_yr$x), max(site_yr$x)) +
