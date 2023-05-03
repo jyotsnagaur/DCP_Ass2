@@ -386,8 +386,10 @@ print(c_country[which.max(c_country$n),])
 
 # -----------------------------QUESTION 5---------------------------------------
 
-# Q5 How long took each site to be in the endangered list
+# Q5 What country has more sites in the list?
+# How long took each site to be in the endangered list?
 
+time_taken <- data.frame("Site" = endangered_table$Name, "Time_taken(yrs)"=endangered_table$Endangered-endangered_table$`Year (WHS)`)
 
 
 
