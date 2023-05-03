@@ -27,7 +27,7 @@
 # load library
 library(tidyverse)
 library(rvest)
-#library(stringr) #stringr is a part of tidyverse
+# library(stringr) #stringr is a part of tidyverse
 
 # ******************************  PART1 ****************************************
 
@@ -86,13 +86,13 @@ rownames(legend_table) <- word(legend_table[, 1], 1)
 legend_table[, 1] <- sub("^\\w+:\\s", "", legend_table[, 1])
 legend_table
 # CHK THIS-------------------------------------------------------------------------------
-#input_string <- "Name: as listed by the World Heritage Committee"
+# input_string <- "Name: as listed by the World Heritage Committee"
 
 # remove the first word
-#output_string <- str_replace(input_string, "^\\w+:\\s", "")
+# output_string <- str_replace(input_string, "^\\w+:\\s", "")
 
 # print the updated string
-#print(output_string)
+# print(output_string)
 
 
 
@@ -170,8 +170,8 @@ for (i in 1:2) {
 # checking the tables obtained
 view(selection_criteria[[1]])
 
-#remove " from the beginning and end
-#name the columns to identify which criteria belongs to which category
+# remove " from the beginning and end
+# name the columns to identify which criteria belongs to which category
 # DOES THIS NEED FURTHER CLEANING?--------------------------------------------------------------
 
 
@@ -190,62 +190,62 @@ view(endangered_table)
 # Q2 obtain the country from the “Location” variable. Using computational methods
 # (e.g., Regex) fix any inconsistencies in the variable and then extract the country only.
 
-#Step-1: remove all characters occuring after a digit using gsub and lookbehind
-#(?<=\\d) is a positive lookbehind that matches any character that is preceded by a digit.
-#perl=TRUE in gsub to enable the use of lookbehind
+# Step-1: remove all characters occuring after a digit using gsub and lookbehind
+# (?<=\\d) is a positive lookbehind that matches any character that is preceded by a digit.
+# perl=TRUE in gsub to enable the use of lookbehind
 
-endangered_table$Location <- gsub("(?<=\\d).*", "", endangered_table$Location, perl=TRUE)
+endangered_table$Location <- gsub("(?<=\\d).*", "", endangered_table$Location, perl = TRUE)
 
 
 
-#Step-2: remove the last character containing the digit which was used in step-1
+# Step-2: remove the last character containing the digit which was used in step-1
 endangered_table$Location <- str_sub(endangered_table$Location, end = -2)
 
 
-#Step-3: Fix exceptions in rows 1 and 48
-#for location in row 1-remove all text coming after the dot
+# Step-3: Fix exceptions in rows 1 and 48
+# for location in row 1-remove all text coming after the dot
 endangered_table$Location <- gsub("\\..*", "", endangered_table$Location)
 
 
 
-#Step-4: remove all characters occuring before the comma using sub and lookahead
+# Step-4: remove all characters occuring before the comma using sub and lookahead
 # .* matches any character (except newline) 0 or more times.
 # (?=,) is a positive lookahead assertion that matches a comma (,) without including it in the match
-#sub is used since some entries contain multiple columns
+# sub is used since some entries contain multiple columns
 
-endangered_table$Location <- sub(".*(?=,)", "", endangered_table$Location, perl=TRUE) 
+endangered_table$Location <- sub(".*(?=,)", "", endangered_table$Location, perl = TRUE)
 
-#Step-5: Removing the comma
-endangered_table$Location <- gsub(",","",endangered_table$Location)
+# Step-5: Removing the comma
+endangered_table$Location <- gsub(",", "", endangered_table$Location)
 
 
-#Step-6: Trimming the whitespaces
+# Step-6: Trimming the whitespaces
 endangered_table$Location <- str_trim(endangered_table$Location, side = "both")
 
 
-#Step-7: Finding and fixing the exceptions
-#In row 28 -Ken Kenya
-#checking for index of any entries with repeating letters and fixing them
+# Step-7: Finding and fixing the exceptions
+# In row 28 -Ken Kenya
+# checking for index of any entries with repeating letters and fixing them
 chk_index <- which(grepl("Ken", endangered_table$Location))
 endangered_table$Location[chk_index] <- str_remove(endangered_table$Location[chk_index], "Ken")
 
-#In row 32 -Serbia[a]
-#checking for index of any entries with Serbia[a]
+# In row 32 -Serbia[a]
+# checking for index of any entries with Serbia[a]
 chk_index_2 <- which(grepl("Serbia", endangered_table$Location))
-endangered_table$Location[chk_index_2] <- str_sub(endangered_table$Location[chk_index_2], end = -(nchar('[a]')+1))
+endangered_table$Location[chk_index_2] <- str_sub(endangered_table$Location[chk_index_2], end = -(nchar("[a]") + 1))
 
 
-#In row 33- Côte d'Ivoire* Guinea*
-#the above are 2 different country names so I will leave them both
+# In row 33- Côte d'Ivoire* Guinea*
+# the above are 2 different country names so I will leave them both
 chk_index_3 <- which(grepl("Guinea", endangered_table$Location))
 endangered_table$Location[chk_index_3] <- "Côte d'Ivoire/ Guinea"
 
-#In row 37- JerJerusalem(no nation named by UNESCO)[nb
+# In row 37- JerJerusalem(no nation named by UNESCO)[nb
 chk_index_4 <- which(grepl("Jerusalem", endangered_table$Location))
 endangered_table$Location[chk_index_4] <- "Israel"
 
 
-#Step-8: Trimming the whitespaces again
+# Step-8: Trimming the whitespaces again
 endangered_table$Location <- str_trim(endangered_table$Location, side = "both")
 
 
@@ -287,7 +287,6 @@ for (i in seq_along(endangered_table$`Areaha (acre)`)) {
     endangered_table$`Areaha (acre)`[i] <- sub("^[^(]*\\(", "(", endangered_table$`Areaha (acre)`[i])
     # remove brackets from the values
     endangered_table$`Areaha (acre)`[i] <- substring(endangered_table$`Areaha (acre)`[i], 2, nchar(endangered_table$`Areaha (acre)`[i]) - 1)
-    
   }
 }
 
@@ -313,20 +312,20 @@ endangered_table$Endangered <- str_trim(endangered_table$Endangered, side = "lef
 
 # Q6 Make sure that you have numeric vectors and characters vectors only
 
-#checking class of each column
-for (i in seq_along(endangered_table)){
+# checking class of each column
+for (i in seq_along(endangered_table)) {
   print(class(endangered_table[[i]]))
 }
 
 
 # there are 3 columns which need to be numeric type-Area, Year,Endangered
-for (i in c(3,4,5)){
+for (i in c(3, 4, 5)) {
   endangered_table[[i]] <- as.numeric(endangered_table[[i]])
 }
 
 
-#checking class again of each column
-for (i in seq_along(endangered_table)){
+# checking class again of each column
+for (i in seq_along(endangered_table)) {
   print(class(endangered_table[[i]]))
 }
 
@@ -338,18 +337,18 @@ for (i in seq_along(endangered_table)){
 # Q1 What type of site (cultural or natural) is the most common in the endangered
 # list and how many does each type of site have?
 
-#counting the number for all cultural and natural sites
+# counting the number for all cultural and natural sites
 
 c_cultural <- count(endangered_table, Type)
 print(c_cultural)
 
-#checking the most common for all cultural and natural sites
+# checking the most common for all cultural and natural sites
 which.max(c_cultural$n)
-print(c_cultural[which.max(c_cultural$n),])
+print(c_cultural[which.max(c_cultural$n), ])
 
 # -----------------------------QUESTION 2---------------------------------------
 
-# Q2 What site has the largest area (in m2 ) and what site has the smallest area 
+# Q2 What site has the largest area (in m2 ) and what site has the smallest area
 
 sqm_area <- list()
 for (i in seq_along(endangered_table$`Area(acre)`)) {
@@ -363,23 +362,23 @@ print(data.frame(endangered_table$Name[which.min(sqm_area)], sqm_area[which.min(
 
 # -----------------------------QUESTION 3---------------------------------------
 
-# Q3 What is the frequency (in years) with which sites were put on endangered 
+# Q3 What is the frequency (in years) with which sites were put on endangered
 # list-plot
 
 # Install and load ggplot2
-install.packages("ggplot2")                          
+install.packages("ggplot2")
 library("ggplot2")
 
 
-#preparing data
-site_yr <- data.frame(x = endangered_table$Endangered )
+# preparing data
+site_yr <- data.frame(x = endangered_table$Endangered)
 
 min(site_yr$x)
 max(site_yr$x)
 
-#labels_plot <- c("1982","1987","1992","1997","2002","2007","2013","2018","2023")
+# labels_plot <- c("1982","1987","1992","1997","2002","2007","2013","2018","2023")
 
-ggplot(site_yr, aes(x = x)) + 
+ggplot(site_yr, aes(x = x)) +
   geom_histogram(col = "black", fill = "pink", binwidth = 5) +
   xlim(min(site_yr$x), max(site_yr$x)) +
   labs(
@@ -395,14 +394,14 @@ ggplot(site_yr, aes(x = x)) +
 
 # Q4 What country has more sites in the list? how many sites has each country?
 
-#counting the number for all countries
+# counting the number for all countries
 
 c_country <- count(endangered_table, Location)
-print(c_country, n=34)
+print(c_country, n = 34)
 
-#checking the max count for country
+# checking the max count for country
 which.max(c_country$n)
-print(c_country[which.max(c_country$n),])
+print(c_country[which.max(c_country$n), ])
 
 
 
@@ -411,9 +410,9 @@ print(c_country[which.max(c_country$n),])
 # Q5 What country has more sites in the list?
 # How long took each site to be in the endangered list?
 
-time_taken <- data.frame("Site" = endangered_table$Name, "Time_taken(yrs)"=endangered_table$Endangered-endangered_table$`Year (WHS)`)
+time_taken <- data.frame("Site" = endangered_table$Name, "Time_taken(yrs)" = endangered_table$Endangered - endangered_table$`Year (WHS)`)
 
-print(time_taken[which.max(time_taken$Time_taken.yrs.),])
+print(time_taken[which.max(time_taken$Time_taken.yrs.), ])
 
 
 
@@ -423,8 +422,8 @@ print(time_taken[which.max(time_taken$Time_taken.yrs.),])
 # they were inscribed in the World Heritage List-plot
 
 
-ggplot(time_taken, aes(x = time_taken$Time_taken.yrs.)) + 
-  geom_histogram(col = "grey", fill = "yellow", binwidth = 5, alpha=0.6) +
+ggplot(time_taken, aes(x = time_taken$Time_taken.yrs.)) +
+  geom_histogram(col = "grey", fill = "yellow", binwidth = 5, alpha = 0.6) +
   xlim(min(time_taken$Time_taken.yrs.), max(time_taken$Time_taken.yrs.)) +
   labs(
     title = "Frequency (in years) distribution of Time taken to become endangered after being a WHS",
@@ -432,9 +431,8 @@ ggplot(time_taken, aes(x = time_taken$Time_taken.yrs.)) +
     y = "Count of Values"
   )
 
-#adjust x and y axes values-ids notes
+# adjust x and y axes values-ids notes
 
 
 
 # **********************************END*****************************************
-
