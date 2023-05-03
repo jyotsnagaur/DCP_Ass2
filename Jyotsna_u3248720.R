@@ -352,29 +352,38 @@ print(c_cultural[which.max(c_cultural$n),])
 # Q2 What site has the largest area (in m2 ) and what site has the smallest area 
 
 sqm_area <- list()
-for (i in seq_along(endangered_table$`Area(acre)`)){
-  sqm_area[i] <- round((4046.86 * endangered_table$`Area(acre)`[i]),2)
-  
+for (i in seq_along(endangered_table$`Area(acre)`)) {
+  sqm_area[i] <- round((4046.86 * endangered_table$`Area(acre)`[i]), 2)
 }
 sqm_area
-print(data.frame(endangered_table$Name[which.max(sqm_area)],sqm_area[which.max(sqm_area)]))
+print(data.frame(endangered_table$Name[which.max(sqm_area)], sqm_area[which.max(sqm_area)]))
 
-print(data.frame(endangered_table$Name[which.min(sqm_area)],sqm_area[which.min(sqm_area)]))
+print(data.frame(endangered_table$Name[which.min(sqm_area)], sqm_area[which.min(sqm_area)]))
 
-#CHK THE DECIMAL VALUES ABOVE-----------------------------------------------------------------------------
 
 # -----------------------------QUESTION 3---------------------------------------
 
 # Q3 What is the frequency (in years) with which sites were put on endangered 
 # list-plot
 
+
+
+
 # -----------------------------QUESTION 4---------------------------------------
 
 # Q4 What country has more sites in the list? how many sites has each country?
 
+
+
+
+
 # -----------------------------QUESTION 5---------------------------------------
 
 # Q5 How long took each site to be in the endangered list
+
+
+
+
 
 
 # -----------------------------QUESTION 6---------------------------------------
