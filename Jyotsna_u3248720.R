@@ -423,11 +423,18 @@ print(time_taken[which.max(time_taken$Time_taken.yrs.),])
 # they were inscribed in the World Heritage List-plot
 
 
+ggplot(time_taken, aes(x = time_taken$Time_taken.yrs.)) + 
+  geom_histogram(col = "grey", fill = "yellow", binwidth = 5, alpha=0.6) +
+  xlim(min(time_taken$Time_taken.yrs.), max(time_taken$Time_taken.yrs.)) +
+  labs(
+    title = "Frequency (in years) distribution of Time taken to become endangered after being a WHS",
+    x = "Time taken to become endangered after being a WHS",
+    y = "Count of Values"
+  )
+
+#adjust x and y axes values-ids notes
 
 
 
-
-
-
-
+# **********************************END*****************************************
 
