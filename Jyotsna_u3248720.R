@@ -234,6 +234,10 @@ endangered_table$Location[chk_index] <- str_remove(endangered_table$Location[chk
 #In row 37- JerJerusalem(no nation named by UNESCO)[nb
 
 
+#Step-8: Trimming the whitespaces again
+
+
+
 # -----------------------------QUESTION 3---------------------------------------
 
 # Q3 Using computational methods (Regex), split the variable that contains the criteria
