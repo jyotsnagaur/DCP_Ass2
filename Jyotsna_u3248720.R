@@ -373,7 +373,14 @@ print(data.frame(endangered_table$Name[which.min(sqm_area)], sqm_area[which.min(
 
 # Q4 What country has more sites in the list? how many sites has each country?
 
+#counting the number for all countries
 
+c_country <- count(endangered_table, Location)
+print(c_country, n=34)
+
+#checking the most common for all cultural and natural sites
+which.max(c_country$n)
+print(c_country[which.max(c_country$n),])
 
 
 
