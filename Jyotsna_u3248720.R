@@ -27,7 +27,7 @@
 # load library
 library(tidyverse)
 library(rvest)
-library(stringr)
+library(stringr) 
 
 # ******************************  PART1 ****************************************
 
@@ -127,7 +127,7 @@ link_text <- webpage %>%
   html_nodes("a") %>%
   html_text()
 
-# CHK THIS-------------------------------------------------------------------------------
+
 scrape_all <- data.frame(CONTENT = link_text, URL = all_url)
 
 
@@ -138,21 +138,11 @@ scrape_all <- data.frame(CONTENT = link_text, URL = all_url)
 
 req_index <- which(grepl("Criteria", scrape_all$CONTENT))
 req_list <- scrape_all[req_index, ]
-# CHK THIS-------------------------------------------------------------------------------
+
 hyperlink_criteria <- req_list[1, 2]
 hyperlink_criteria <- paste0("https://en.wikipedia.org", hyperlink_criteria)
 
-# problem is that same text gets pasted repeatedly everytime me run the above line
 
-
-# CHK THIS-------------------------------------------------------------------------------
-req_index <- list()
-req_link <- list()
-
-for (i in 1:nrow(scrape_all)) {
-  req_index[[i]] <- which(grepl("Criteria", scrape_all$CONTENT))
-  # req_link[i] <- scrape_all$URL[req_index]
-}
 
 
 
@@ -180,6 +170,8 @@ for (i in 1:2) {
 # checking the tables obtained
 view(selection_criteria[[1]])
 
+#remove " from the beginning and end
+#name the columns to identify which criteria belongs to which category
 # DOES THIS NEED FURTHER CLEANING?--------------------------------------------------------------
 
 
@@ -202,7 +194,6 @@ view(endangered_table)
 #(?<=\\d) is a positive lookbehind that matches any character that is preceded by a digit.
 #perl=TRUE in gsub to enable the use of lookbehind
 
-
 endangered_table$Location <- gsub("(?<=\\d).*", "", endangered_table$Location, perl=TRUE)
 
 
@@ -212,20 +203,35 @@ endangered_table$Location <- str_sub(endangered_table$Location, end = -2)
 
 
 #Step-3: Fix exceptions in rows 1 and 48
+#for location in row 1-remove all text coming after the dot
+endangered_table$Location <- gsub("\\..*", "", endangered_table$Location)
 
 
 
-#Step-3: remove all characters occuring before the comma using gsub and lookahead
+#Step-4: remove all characters occuring before the comma using sub and lookahead
+# .* matches any character (except newline) 0 or more times.
+# (?=,) is a positive lookahead assertion that matches a comma (,) without including it in the match
+#sub is used since some entries contain multiple columns
 
-endangered_table$Location <- gsub(".*(?=,)", "", endangered_table$Location, perl=TRUE) 
+endangered_table$Location <- sub(".*(?=,)", "", endangered_table$Location, perl=TRUE) 
 
-#Step-4: Removing the comma
+#Step-5: Removing the comma
+endangered_table$Location <- gsub(",","",endangered_table$Location)
 
 
+#Step-6: Trimming the whitespaces
+endangered_table$Location <- str_trim(endangered_table$Location, side = "both")
 
-#Step-5: Trimming the whitespaces
 
-#Step-6: Fixing the exceptions
+#Step-7: Finding and fixing the exceptions
+#In row 28 -Ken Kenya
+#checking for any entries with repeating letters and fixing them
+chk_index <- which(grepl("Ken", endangered_table$Location))
+endangered_table$Location[chk_index] <- str_remove(endangered_table$Location[chk_index], "Ken")
+
+#In row 32 -Serbia[a]
+#In row 33- Côte d'Ivoire* Guinea*
+#In row 37- JerJerusalem(no nation named by UNESCO)[nb
 
 
 # -----------------------------QUESTION 3---------------------------------------
