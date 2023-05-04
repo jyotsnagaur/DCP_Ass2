@@ -423,10 +423,11 @@ print(time_taken[which.max(time_taken$Time_taken.yrs.), ])
 # they were inscribed in the World Heritage List-plot
 
 
+
 ggplot(time_taken, aes(x = time_taken$Time_taken.yrs.)) +
   geom_histogram(col = "grey", fill = "yellow", binwidth = 3, alpha = 0.6) +
   xlim(min(time_taken$Time_taken.yrs.), max(time_taken$Time_taken.yrs.)) +
-  scale_x_continuous(breaks=seq(0,34,by=2))+
+  scale_x_continuous(breaks=seq(0,36,by=3), limits=c(0, max(time_taken$Time_taken.yrs.)))+
   labs(
     title = "Frequency (in years) distribution of Time taken to become endangered after being a WHS",
     x = "Time taken to become endangered after being a WHS",
@@ -436,16 +437,42 @@ ggplot(time_taken, aes(x = time_taken$Time_taken.yrs.)) +
 # adjust x and y axes values-ids notes
 
 
+bw<- diff(range(time_taken$Time_taken.yrs.)) / 20
 
 
+ggplot(time_taken, aes(x = time_taken$Time_taken.yrs.)) +
+  geom_histogram(col = "grey", fill = "yellow", binwidth = 1.7, alpha = 0.6) +
+  xlim(min(time_taken$Time_taken.yrs.), max(time_taken$Time_taken.yrs.)) +
+  scale_x_continuous(breaks=seq(0,36,by=3))+
+  labs(
+    title = "Frequency (in years) distribution of Time taken to become endangered after being a WHS",
+    x = "Time taken to become endangered after being a WHS",
+    y = "Count of Values"
+  )
 
 
-bw <- diff(range(data$x)) / 20
+#---------------------------------------------------------------------------
 
-# Create a histogram with custom binwidth and x-axis ticks
-ggplot(data, aes(x)) +
-  geom_histogram(binwidth = bw) +
-  scale_x_continuous(breaks = seq(min(data$x), max(data$x), bw), 
-                     labels = seq(bw, max(data$x) - bw, bw))
+#create a frequency distribution table
+
+bin_width <- 3
+bins <- cut(time_taken$Time_taken.yrs., breaks = seq(min(time_taken$Time_taken.yrs.), max(time_taken$Time_taken.yrs.) + bin_width, bin_width), right = FALSE)
+
+# Create a frequency distribution table
+freq_table <- as.data.frame(table(bins))
+
+# Rename the columns
+colnames(freq_table) <- c("bin_interval", "count")
+
+
+#make a bar plot from the frequency distribution table
+
+ggplot(data = freq_table, aes(x = bin_interval, y = count)) +
+  geom_bar(stat = "identity", col = "grey", fill = "yellow") +
+  xlab("Time Interval(in years which are multiples of 3)") +
+  scale_y_continuous(breaks=seq(0,17,by=1))+
+  ylab("Count") +
+  ggtitle("Frequency distribution of Time taken(in yrs) to become endangered after being a WHS")
+
 
 # **********************************END*****************************************
