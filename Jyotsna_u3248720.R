@@ -169,11 +169,11 @@ for (i in 1:2) {
 
 # checking the tables obtained
 view(selection_criteria[[1]])
+view(selection_criteria[[2]])
 
-# remove " from the beginning and end
 # name the columns to identify which criteria belongs to which category
-# DOES THIS NEED FURTHER CLEANING?--------------------------------------------------------------
-
+colnames(selection_criteria[[1]]) <- "Cultural"
+colnames(selection_criteria[[2]]) <- "Natural"
 
 # ******************************  PART2 ****************************************
 # -----------------------------QUESTION 1---------------------------------------
@@ -376,11 +376,12 @@ site_yr <- data.frame(x = endangered_table$Endangered)
 min(site_yr$x)
 max(site_yr$x)
 
-# labels_plot <- c("1982","1987","1992","1997","2002","2007","2013","2018","2023")
+
 
 ggplot(site_yr, aes(x = x)) +
   geom_histogram(col = "black", fill = "pink", binwidth = 5) +
   xlim(min(site_yr$x), max(site_yr$x)) +
+  scale_x_continuous(breaks=seq(1982,2023,by=5))+
   labs(
     title = "Frequency (in years) distribution of sites put on endangered list",
     x = "Year",
@@ -423,8 +424,9 @@ print(time_taken[which.max(time_taken$Time_taken.yrs.), ])
 
 
 ggplot(time_taken, aes(x = time_taken$Time_taken.yrs.)) +
-  geom_histogram(col = "grey", fill = "yellow", binwidth = 5, alpha = 0.6) +
+  geom_histogram(col = "grey", fill = "yellow", binwidth = 3, alpha = 0.6) +
   xlim(min(time_taken$Time_taken.yrs.), max(time_taken$Time_taken.yrs.)) +
+  scale_x_continuous(breaks=seq(0,34,by=2))+
   labs(
     title = "Frequency (in years) distribution of Time taken to become endangered after being a WHS",
     x = "Time taken to become endangered after being a WHS",
@@ -434,5 +436,16 @@ ggplot(time_taken, aes(x = time_taken$Time_taken.yrs.)) +
 # adjust x and y axes values-ids notes
 
 
+
+
+
+
+bw <- diff(range(data$x)) / 20
+
+# Create a histogram with custom binwidth and x-axis ticks
+ggplot(data, aes(x)) +
+  geom_histogram(binwidth = bw) +
+  scale_x_continuous(breaks = seq(min(data$x), max(data$x), bw), 
+                     labels = seq(bw, max(data$x) - bw, bw))
 
 # **********************************END*****************************************
