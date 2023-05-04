@@ -423,36 +423,6 @@ print(time_taken[which.max(time_taken$Time_taken.yrs.), ])
 # they were inscribed in the World Heritage List-plot
 
 
-
-ggplot(time_taken, aes(x = time_taken$Time_taken.yrs.)) +
-  geom_histogram(col = "grey", fill = "yellow", binwidth = 3, alpha = 0.6) +
-  xlim(min(time_taken$Time_taken.yrs.), max(time_taken$Time_taken.yrs.)) +
-  scale_x_continuous(breaks=seq(0,36,by=3), limits=c(0, max(time_taken$Time_taken.yrs.)))+
-  labs(
-    title = "Frequency (in years) distribution of Time taken to become endangered after being a WHS",
-    x = "Time taken to become endangered after being a WHS",
-    y = "Count of Values"
-  )
-
-# adjust x and y axes values-ids notes
-
-
-bw<- diff(range(time_taken$Time_taken.yrs.)) / 20
-
-
-ggplot(time_taken, aes(x = time_taken$Time_taken.yrs.)) +
-  geom_histogram(col = "grey", fill = "yellow", binwidth = 1.7, alpha = 0.6) +
-  xlim(min(time_taken$Time_taken.yrs.), max(time_taken$Time_taken.yrs.)) +
-  scale_x_continuous(breaks=seq(0,36,by=3))+
-  labs(
-    title = "Frequency (in years) distribution of Time taken to become endangered after being a WHS",
-    x = "Time taken to become endangered after being a WHS",
-    y = "Count of Values"
-  )
-
-
-#---------------------------------------------------------------------------
-
 #create a frequency distribution table
 
 bin_width <- 3
