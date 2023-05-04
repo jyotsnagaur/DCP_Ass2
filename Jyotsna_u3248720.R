@@ -370,23 +370,26 @@ install.packages("ggplot2")
 library("ggplot2")
 
 
-# preparing data
-site_yr <- data.frame(x = endangered_table$Endangered)
+#create a frequency distribution table
 
-min(site_yr$x)
-max(site_yr$x)
+bin_width <- 5
+bins <- cut(endangered_table$Endangered, breaks = seq(min(endangered_table$Endangered), max(endangered_table$Endangered) + bin_width, bin_width), right = FALSE)
+
+# Create a frequency distribution table
+freq_table_en <- as.data.frame(table(bins))
+
+# Rename the columns
+colnames(freq_table_en) <- c("bin_interval2", "count2")
 
 
+#make a bar plot from the frequency distribution table
 
-ggplot(site_yr, aes(x = x)) +
-  geom_histogram(col = "black", fill = "pink", binwidth = 5) +
-  xlim(min(site_yr$x), max(site_yr$x)) +
-  scale_x_continuous(breaks=seq(1982,2023,by=5))+
-  labs(
-    title = "Frequency (in years) distribution of sites put on endangered list",
-    x = "Year",
-    y = "Count of Values"
-  )
+ggplot(data = freq_table_en, aes(x = bin_interval2, y = count2)) +
+  geom_bar(stat = "identity", col = "black", fill = "pink") +
+  xlab("Year(every 5 year interval)") +
+  scale_y_continuous(breaks=seq(0,24,by=3))+
+  ylab("Count") +
+  ggtitle("Frequency distribution of sites put on endangered list every 5 years")
 
 
 
