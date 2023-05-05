@@ -27,7 +27,7 @@
 # load library
 library(tidyverse)
 library(rvest)
-# library(stringr) 
+# library(stringr)
 
 # ******************************  PART1 ****************************************
 
@@ -39,65 +39,65 @@ library(rvest)
 # Specify the URL to scrape
 url <- "https://en.wikipedia.org/wiki/List_of_World_Heritage_in_Danger"
 
-#using read_html package from rvest library, scrape the website contents 
+# using read_html package from rvest library, scrape the website contents
 webpage <- read_html(url)
 
 # -----------------------------QUESTION 2---------------------------------------
 
 # Q2 Obtain the table legend and store all its elements.
 
-#using the pipe function of tidyverse, and extracting the node with the 
-#identifier 'dl' and then keeping all the text that is present within that node.
+# using the pipe function of tidyverse, and extracting the node with the
+# identifier 'dl' and then keeping all the text that is present within that node.
 table_legend <- webpage %>%
   html_nodes("dl") %>%
   html_text()
 
-#checking to see the extracted text. It is in the form of lists.
-#print(table_legend)
+# checking to see the extracted text. It is in the form of lists.
+# print(table_legend)
 
-#taking out the second list since it contains the table legend text required
+# taking out the second list since it contains the table legend text required
 required <- table_legend[2]
 
 
-#the legend text is in the form of continuous lines. We need to split the text
+# the legend text is in the form of continuous lines. We need to split the text
 # split the single string into multiple strings using the new lines (\n)
-#using strsplit function from stringr
+# using strsplit function from stringr
 legend_table <- strsplit(required, "\\n")
-#legend_table #checking the result
+# legend_table #checking the result
 
 
-#Making the legend presentable by converting it to a table
-# convert string to a table using the matrix function. We need only 1 column 
-#we need to create the table observations according to the rows
+# Making the legend presentable by converting it to a table
+# convert string to a table using the matrix function. We need only 1 column
+# we need to create the table observations according to the rows
 legend_table <- matrix(unlist(legend_table), ncol = 1, byrow = TRUE)
-#View(legend_table) #checking the result
+# View(legend_table) #checking the result
 
 
-# removing superscript text in square brackets which came as part of citations 
+# removing superscript text in square brackets which came as part of citations
 # on the given webpage in row 1
 
 # nchar(legend_table[1, ]) gives the number of characters in the string of 1st row
 # using substring function we specify start index of desired subsetted string
-#we keep the first character so start=1 which is the second argument
-#we remove the last 3 characters containing citation text so end=total characters in string
-#minus 4 to achieve the desired index
-legend_table[1, ] <- substring(legend_table[1, ], 1, (nchar(legend_table[1, ])-4)) 
+# we keep the first character so start=1 which is the second argument
+# we remove the last 3 characters containing citation text so end=total characters in string
+# minus 4 to achieve the desired index
+legend_table[1, ] <- substring(legend_table[1, ], 1, (nchar(legend_table[1, ]) - 4))
 
-# removing superscript text in square brackets which came as part of citations 
+# removing superscript text in square brackets which came as part of citations
 # on the given webpage in row 2
 
 
 # nchar(legend_table[2, ]) gives the number of characters in the string of 2nd row
 # using substring function we specify start index of desired subsetted string
-#we keep the first character so start=1 which is the second argument
-#we remove the last 63 characters containing citation text so end=total characters in string
-#minus 6 to achieve the desired index
-legend_table[2, ] <- substring(legend_table[2, ], 1, (nchar(legend_table[2, ])-6)) 
+# we keep the first character so start=1 which is the second argument
+# we remove the last 63 characters containing citation text so end=total characters in string
+# minus 6 to achieve the desired index
+legend_table[2, ] <- substring(legend_table[2, ], 1, (nchar(legend_table[2, ]) - 6))
 
 
 # change row names using stringr::word to achieve the rownames as the legend entities
 rownames(legend_table) <- word(legend_table[, 1], 1)
-#editing the rowname with year observation
+# editing the rowname with year observation
 rownames(legend_table)[5] <- "Year (WHS):"
 
 # remove first word of observations using regular expression
@@ -107,16 +107,16 @@ rownames(legend_table)[5] <- "Year (WHS):"
 # \\s matches empty space in the beginning
 legend_table[, 1] <- sub("^\\w+:\\s", "", legend_table[, 1])
 
-#removing extra text from 5th row using sub and regex
+# removing extra text from 5th row using sub and regex
 legend_table[5, 1] <- sub("Year \\(WHS\\):", "", legend_table[5, 1])
 
-#trimming any whitespaces in the column
-legend_table[,1] <- str_trim(legend_table[,1], side = "both")
+# trimming any whitespaces in the column
+legend_table[, 1] <- str_trim(legend_table[, 1], side = "both")
 
-#change column name to 'Description of Table Legend'
+# change column name to 'Description of Table Legend'
 colnames(legend_table) <- "Description of Table Legend"
 
-#check final result
+# check final result
 view(legend_table)
 
 
@@ -125,41 +125,41 @@ view(legend_table)
 # Q3 Scrape the endangered list, which contains the current listed sites.
 
 
-#using the pipe function and html_table function from rvest package to extract only 
-#the tables of the webpage
+# using the pipe function and html_table function from rvest package to extract only
+# the tables of the webpage
 tables <- webpage %>% html_table(fill = TRUE)
 
-#labelling the table as endangered table and accessing the 2nd table from the list 
-#of tables, which is what is desired
+# labelling the table as endangered table and accessing the 2nd table from the list
+# of tables, which is what is desired
 endangered_table <- tables[[2]]
 
-#check the achieved table
+# check the achieved table
 print(endangered_table)
 
 # -----------------------------QUESTION 4---------------------------------------
 
 # Q4 Scrape all available hyperlinks in the url.
 
-#using the html_nodes function from rvest, we extract the content within the 
-#identifier 'a' and then extract the hyperlink text references using 'href' as the identifier
+# using the html_nodes function from rvest, we extract the content within the
+# identifier 'a' and then extract the hyperlink text references using 'href' as the identifier
 all_url <- webpage %>%
   html_nodes("a") %>%
   html_attr("href")
 
 
-# Extract the link text again by using the node 'a' as identifier and keeping all 
-#text only and not the link by using the html_text function
+# Extract the link text again by using the node 'a' as identifier and keeping all
+# text only and not the link by using the html_text function
 link_text <- webpage %>%
   html_nodes("a") %>%
   html_text()
 
-#creating a data frame of the achieved content and their links
+# creating a data frame of the achieved content and their links
 scrape_all <- data.frame(CONTENT = link_text, URL = all_url)
-#resulting in 1416 observations
+# resulting in 1416 observations
 
-#removing extra rows
-#some rows do contain citation link texts which might work by adding a domain name to them
-#hence I am removing only the row 23 with only single character(#)
+# removing extra rows
+# some rows do contain citation link texts which might work by adding a domain name to them
+# hence I am removing only the row 23 with only single character(#)
 scrape_all <- scrape_all[-23, ]
 
 # -----------------------------QUESTION 5---------------------------------------
@@ -167,15 +167,15 @@ scrape_all <- scrape_all[-23, ]
 # Q5 Using computational methods, obtain the hyperlink that you can click on to
 # jump to a new page that contains the selection criteria
 
-#finding the index number of row with the word "criteria" from the data frame
-#containing all the hyperlinks in the webpage
+# finding the index number of row with the word "criteria" from the data frame
+# containing all the hyperlinks in the webpage
 req_index <- which(grepl("Criteria", scrape_all$CONTENT))
-#creating a new list with only the required links
+# creating a new list with only the required links
 req_list <- scrape_all[req_index, ]
-#selecting appropriate link
+# selecting appropriate link
 hyperlink_criteria <- req_list[1, 2]
 
-#using paste command to add domain name in order to make link functional
+# using paste command to add domain name in order to make link functional
 hyperlink_criteria <- paste0("https://en.wikipedia.org", hyperlink_criteria)
 
 
@@ -185,15 +185,15 @@ hyperlink_criteria <- paste0("https://en.wikipedia.org", hyperlink_criteria)
 # Q6 Use the hyperlink obtained in the previous step and scrape the two lists
 # (cultural and natural) and store them in two data structures within a list
 
-#reading the required hyperlink for criteria page using rvest::read_html
+# reading the required hyperlink for criteria page using rvest::read_html
 criteria_page <- read_html(hyperlink_criteria)
 
-#creating empty list to hold all text in criteria page under all the ordered lists
+# creating empty list to hold all text in criteria page under all the ordered lists
 all_text <- list()
-#creating empty list to hold the required text containing criteria description
+# creating empty list to hold the required text containing criteria description
 selection_criteria <- list()
 
-#initializing for loop to store all the text into lists of list
+# initializing for loop to store all the text into lists of list
 for (i in 1:2) {
   all_text <- criteria_page %>%
     html_nodes("ol") %>%
@@ -220,11 +220,11 @@ colnames(selection_criteria[[2]]) <- "Natural"
 # Image and Refs.
 
 # creating a vector for the column names image and refs in order to get their index numbers using
-#which function. After getting their index number we just need to subset the data frame 
-#where negative sign in front of column index means that the stated column index is to be removed
+# which function. After getting their index number we just need to subset the data frame
+# where negative sign in front of column index means that the stated column index is to be removed
 endangered_table <- endangered_table[, -which(names(endangered_table) %in% c("Image", "Refs"))]
 
-#check the result
+# check the result
 view(endangered_table)
 
 # -----------------------------QUESTION 2---------------------------------------
@@ -287,15 +287,15 @@ endangered_table$Location <- str_trim(endangered_table$Location, side = "both")
 # (“Criteria”) into two variables:
 # “Type” (cultural/natural) and “Criteria” (containing roman numbers)
 
-#creating an empty list to hold the new column values
+# creating an empty list to hold the new column values
 new_col <- list()
 
 for (i in seq_along(endangered_table)) {
   # Split the 'criteria' column into 'type' and 'roman' columns using a colon as the separator
   new_col[[i]] <- str_split_fixed(endangered_table$Criteria[i], ":", 2)
-  #assign the type column as the value achieved in new_col list column 1
+  # assign the type column as the value achieved in new_col list column 1
   endangered_table$Type[i] <- new_col[[i]][, 1]
-  #assign the roman column as the value achieved in new_col list column 2
+  # assign the roman column as the value achieved in new_col list column 2
   endangered_table$roman[i] <- new_col[[i]][, 2]
 }
 
@@ -324,7 +324,7 @@ for (i in seq_along(endangered_table$`Areaha (acre)`)) {
   }
 }
 
-#check the result
+# check the result
 endangered_table
 
 # out of loop-change column name
@@ -372,7 +372,7 @@ for (i in seq_along(endangered_table)) {
 # Q1 What type of site (cultural or natural) is the most common in the endangered
 # list and how many does each type of site have?
 
-# counting the number for all cultural and natural sites using count function 
+# counting the number for all cultural and natural sites using count function
 
 c_cultural <- count(endangered_table, Type)
 print(c_cultural)
@@ -385,19 +385,19 @@ print(c_cultural[which.max(c_cultural$n), ])
 
 # Q2 What site has the largest area (in m2 ) and what site has the smallest area
 
-#creating empty list to store the area values in sqm
+# creating empty list to store the area values in sqm
 sqm_area <- list()
 
 for (i in seq_along(endangered_table$`Area(acre)`)) {
-  #using conversion and rounding off to 2 places to populate the above list
+  # using conversion and rounding off to 2 places to populate the above list
   sqm_area[i] <- round((4046.86 * endangered_table$`Area(acre)`[i]), 2)
 }
-#check the result
-#sqm_area
+# check the result
+# sqm_area
 
-#print site name and area with max area
+# print site name and area with max area
 print(data.frame(endangered_table$Name[which.max(sqm_area)], sqm_area[which.max(sqm_area)]))
-#print site name and area with min area
+# print site name and area with min area
 print(data.frame(endangered_table$Name[which.min(sqm_area)], sqm_area[which.min(sqm_area)]))
 
 
@@ -407,11 +407,11 @@ print(data.frame(endangered_table$Name[which.min(sqm_area)], sqm_area[which.min(
 # list-plot
 
 # Install and load ggplot2
-#install.packages("ggplot2")
+# install.packages("ggplot2")
 library("ggplot2")
 
 
-#create a frequency distribution table from the endangered table above
+# create a frequency distribution table from the endangered table above
 bin_width <- 5
 bins <- cut(endangered_table$Endangered, breaks = seq(min(endangered_table$Endangered), max(endangered_table$Endangered) + bin_width, bin_width), right = FALSE)
 
@@ -422,12 +422,12 @@ freq_table_en <- as.data.frame(table(bins))
 colnames(freq_table_en) <- c("bin_interval2", "count2")
 
 
-#make a bar plot from the frequency distribution table
+# make a bar plot from the frequency distribution table
 
 ggplot(data = freq_table_en, aes(x = bin_interval2, y = count2)) +
   geom_bar(stat = "identity", col = "black", fill = "pink") +
   xlab("Year(every 5 year interval)") +
-  scale_y_continuous(breaks=seq(0,24,by=3))+
+  scale_y_continuous(breaks = seq(0, 24, by = 3)) +
   ylab("Count") +
   ggtitle("Frequency distribution of sites put on endangered list every 5 years")
 
@@ -439,7 +439,7 @@ ggplot(data = freq_table_en, aes(x = bin_interval2, y = count2)) +
 
 # counting the number for all countries using count function
 c_country <- count(endangered_table, Location)
-print(c_country, n = 34) #n=34 to display and print 34 rows
+print(c_country, n = 34) # n=34 to display and print 34 rows
 
 # checking the max count for country using which.max
 which.max(c_country$n)
@@ -452,14 +452,14 @@ print(c_country[which.max(c_country$n), ])
 # Q5 What country has more sites in the list?
 # How long took each site to be in the endangered list?
 
-#creating new data frame to show the names of sites along with time taken to
-#be put in endangered list
+# creating new data frame to show the names of sites along with time taken to
+# be put in endangered list
 time_taken <- data.frame("Site" = endangered_table$Name, "Time_taken(yrs)" = endangered_table$Endangered - endangered_table$`Year (WHS)`)
 
-#find index values of all sites with the maximum number of years taken to be endangered
+# find index values of all sites with the maximum number of years taken to be endangered
 max_time_index <- which(time_taken$Time_taken.yrs. == max(time_taken$Time_taken.yrs.))
 
-#print the result by getting the index number from the above step
+# print the result by getting the index number from the above step
 print(time_taken[max_time_index, ])
 
 
@@ -469,7 +469,7 @@ print(time_taken[max_time_index, ])
 # they were inscribed in the World Heritage List-plot
 
 
-#create a frequency distribution table from the time taken data frame from q5
+# create a frequency distribution table from the time taken data frame from q5
 bin_width <- 3
 bins <- cut(time_taken$Time_taken.yrs., breaks = seq(min(time_taken$Time_taken.yrs.), max(time_taken$Time_taken.yrs.) + bin_width, bin_width), right = FALSE)
 
@@ -480,12 +480,12 @@ freq_table <- as.data.frame(table(bins))
 colnames(freq_table) <- c("bin_interval", "count")
 
 
-#make a bar plot from the frequency distribution table
+# make a bar plot from the frequency distribution table
 
 ggplot(data = freq_table, aes(x = bin_interval, y = count)) +
   geom_bar(stat = "identity", col = "grey", fill = "yellow") +
   xlab("Time Interval(in years which are multiples of 3)") +
-  scale_y_continuous(breaks=seq(0,17,by=1))+
+  scale_y_continuous(breaks = seq(0, 17, by = 1)) +
   ylab("Count") +
   ggtitle("Frequency distribution of Time taken(in yrs) to become endangered after being a WHS")
 
