@@ -167,13 +167,16 @@ scrape_all <- scrape_all[-23, ]
 # Q5 Using computational methods, obtain the hyperlink that you can click on to
 # jump to a new page that contains the selection criteria
 
+#finding the index number of row with the word "criteria" from the data frame
+#containing all the hyperlinks in the webpage
 req_index <- which(grepl("Criteria", scrape_all$CONTENT))
+#creating a new list with only the required links
 req_list <- scrape_all[req_index, ]
-
+#selecting appropriate link
 hyperlink_criteria <- req_list[1, 2]
+
+#using paste command to add domain name in order to make link functional
 hyperlink_criteria <- paste0("https://en.wikipedia.org", hyperlink_criteria)
-
-
 
 
 
