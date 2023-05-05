@@ -235,20 +235,14 @@ view(endangered_table)
 # Step-1: remove all characters occuring after a digit using gsub and lookbehind
 # (?<=\\d) is a positive lookbehind that matches any character that is preceded by a digit.
 # perl=TRUE in gsub to enable the use of lookbehind
-
 endangered_table$Location <- gsub("(?<=\\d).*", "", endangered_table$Location, perl = TRUE)
-
-
 
 # Step-2: remove the last character containing the digit which was used in step-1
 endangered_table$Location <- str_sub(endangered_table$Location, end = -2)
 
-
 # Step-3: Fix exceptions in rows 1 and 48
 # for location in row 1-remove all text coming after the dot
 endangered_table$Location <- gsub("\\..*", "", endangered_table$Location)
-
-
 
 # Step-4: remove all characters occuring before the comma using sub and lookahead
 # .* matches any character (except newline) 0 or more times.
@@ -260,10 +254,8 @@ endangered_table$Location <- sub(".*(?=,)", "", endangered_table$Location, perl 
 # Step-5: Removing the comma
 endangered_table$Location <- gsub(",", "", endangered_table$Location)
 
-
 # Step-6: Trimming the whitespaces
 endangered_table$Location <- str_trim(endangered_table$Location, side = "both")
-
 
 # Step-7: Finding and fixing the exceptions
 # In row 28 -Ken Kenya
@@ -276,7 +268,6 @@ endangered_table$Location[chk_index] <- str_remove(endangered_table$Location[chk
 chk_index_2 <- which(grepl("Serbia", endangered_table$Location))
 endangered_table$Location[chk_index_2] <- str_sub(endangered_table$Location[chk_index_2], end = -(nchar("[a]") + 1))
 
-
 # In row 33- Côte d'Ivoire* Guinea*
 # the above are 2 different country names so I will leave them both
 chk_index_3 <- which(grepl("Guinea", endangered_table$Location))
@@ -285,7 +276,6 @@ endangered_table$Location[chk_index_3] <- "Côte d'Ivoire/ Guinea"
 # In row 37- JerJerusalem(no nation named by UNESCO)[nb
 chk_index_4 <- which(grepl("Jerusalem", endangered_table$Location))
 endangered_table$Location[chk_index_4] <- "Israel"
-
 
 # Step-8: Trimming the whitespaces again
 endangered_table$Location <- str_trim(endangered_table$Location, side = "both")
