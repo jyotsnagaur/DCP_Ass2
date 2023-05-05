@@ -372,12 +372,12 @@ for (i in seq_along(endangered_table)) {
 # Q1 What type of site (cultural or natural) is the most common in the endangered
 # list and how many does each type of site have?
 
-# counting the number for all cultural and natural sites
+# counting the number for all cultural and natural sites using count function 
 
 c_cultural <- count(endangered_table, Type)
 print(c_cultural)
 
-# checking the most common for all cultural and natural sites
+# checking the most common for all cultural and natural sites using which.max
 which.max(c_cultural$n)
 print(c_cultural[which.max(c_cultural$n), ])
 
@@ -385,13 +385,19 @@ print(c_cultural[which.max(c_cultural$n), ])
 
 # Q2 What site has the largest area (in m2 ) and what site has the smallest area
 
+#creating empty list to store the area values in sqm
 sqm_area <- list()
+
 for (i in seq_along(endangered_table$`Area(acre)`)) {
+  #using conversion and rounding off to 2 places to populate the above list
   sqm_area[i] <- round((4046.86 * endangered_table$`Area(acre)`[i]), 2)
 }
-sqm_area
-print(data.frame(endangered_table$Name[which.max(sqm_area)], sqm_area[which.max(sqm_area)]))
+#check the result
+#sqm_area
 
+#print site name and area with max area
+print(data.frame(endangered_table$Name[which.max(sqm_area)], sqm_area[which.max(sqm_area)]))
+#print site name and area with min area
 print(data.frame(endangered_table$Name[which.min(sqm_area)], sqm_area[which.min(sqm_area)]))
 
 
@@ -401,12 +407,11 @@ print(data.frame(endangered_table$Name[which.min(sqm_area)], sqm_area[which.min(
 # list-plot
 
 # Install and load ggplot2
-install.packages("ggplot2")
+#install.packages("ggplot2")
 library("ggplot2")
 
 
-#create a frequency distribution table
-
+#create a frequency distribution table from the endangered table above
 bin_width <- 5
 bins <- cut(endangered_table$Endangered, breaks = seq(min(endangered_table$Endangered), max(endangered_table$Endangered) + bin_width, bin_width), right = FALSE)
 
@@ -428,17 +433,15 @@ ggplot(data = freq_table_en, aes(x = bin_interval2, y = count2)) +
 
 
 
-
 # -----------------------------QUESTION 4---------------------------------------
 
 # Q4 What country has more sites in the list? how many sites has each country?
 
-# counting the number for all countries
-
+# counting the number for all countries using count function
 c_country <- count(endangered_table, Location)
-print(c_country, n = 34)
+print(c_country, n = 34) #n=34 to display and print 34 rows
 
-# checking the max count for country
+# checking the max count for country using which.max
 which.max(c_country$n)
 print(c_country[which.max(c_country$n), ])
 
@@ -449,10 +452,15 @@ print(c_country[which.max(c_country$n), ])
 # Q5 What country has more sites in the list?
 # How long took each site to be in the endangered list?
 
+#creating new data frame to show the names of sites along with time taken to
+#be put in endangered list
 time_taken <- data.frame("Site" = endangered_table$Name, "Time_taken(yrs)" = endangered_table$Endangered - endangered_table$`Year (WHS)`)
 
-print(time_taken[which.max(time_taken$Time_taken.yrs.), ])
+#find index values of all sites with the maximum number of years taken to be endangered
+max_time_index <- which(time_taken$Time_taken.yrs. == max(time_taken$Time_taken.yrs.))
 
+#print the result by getting the index number from the above step
+print(time_taken[max_time_index, ])
 
 
 # -----------------------------QUESTION 6---------------------------------------
@@ -461,8 +469,7 @@ print(time_taken[which.max(time_taken$Time_taken.yrs.), ])
 # they were inscribed in the World Heritage List-plot
 
 
-#create a frequency distribution table
-
+#create a frequency distribution table from the time taken data frame from q5
 bin_width <- 3
 bins <- cut(time_taken$Time_taken.yrs., breaks = seq(min(time_taken$Time_taken.yrs.), max(time_taken$Time_taken.yrs.) + bin_width, bin_width), right = FALSE)
 
