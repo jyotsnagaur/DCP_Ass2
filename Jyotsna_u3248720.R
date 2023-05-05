@@ -39,25 +39,30 @@ library(rvest)
 # Specify the URL to scrape
 url <- "https://en.wikipedia.org/wiki/List_of_World_Heritage_in_Danger"
 
+#using read_html package from rvest library, scrape the website contents 
 webpage <- read_html(url)
 
 # -----------------------------QUESTION 2---------------------------------------
 
 # Q2 Obtain the table legend and store all its elements.
 
+#using the pipe function of tidyverse, and extracting the node with the 
+#identifier 'dl' and then keeping all the text that is present within that node.
 table_legend <- webpage %>%
   html_nodes("dl") %>%
   html_text()
 
-print(table_legend)
+#checking to see the extracted text. It is in the form of lists.
+#print(table_legend)
 
+#taking out the second list since it contains the table legend text required
 required <- table_legend[2]
 
 
-
+#
 # split the single string into multiple strings using the new lines (\n)
 legend_table <- strsplit(required, "\\n")
-legend_table
+#legend_table #checking the result
 
 
 # convert string to a table
