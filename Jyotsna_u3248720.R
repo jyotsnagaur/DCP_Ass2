@@ -185,11 +185,15 @@ hyperlink_criteria <- paste0("https://en.wikipedia.org", hyperlink_criteria)
 # Q6 Use the hyperlink obtained in the previous step and scrape the two lists
 # (cultural and natural) and store them in two data structures within a list
 
+#reading the required hyperlink for criteria page using rvest::read_html
 criteria_page <- read_html(hyperlink_criteria)
 
-
+#creating empty list to hold all text in criteria page under all the ordered lists
 all_text <- list()
+#creating empty list to hold the required text containing criteria description
 selection_criteria <- list()
+
+#initializing for loop to store all the text into lists of list
 for (i in 1:2) {
   all_text <- criteria_page %>%
     html_nodes("ol") %>%
@@ -197,7 +201,7 @@ for (i in 1:2) {
   selection_criteria[[i]] <- all_text[i]
   # splitting the strings
   selection_criteria[[i]] <- strsplit(selection_criteria[[i]], "\\n")
-  # convert to matrix table
+  # convert list to matrix table
   selection_criteria[[i]] <- matrix(unlist(selection_criteria[[i]]), ncol = 1, byrow = TRUE)
 }
 
