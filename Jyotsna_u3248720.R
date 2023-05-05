@@ -287,19 +287,21 @@ endangered_table$Location <- str_trim(endangered_table$Location, side = "both")
 # (“Criteria”) into two variables:
 # “Type” (cultural/natural) and “Criteria” (containing roman numbers)
 
+#creating an empty list to hold the new column values
 new_col <- list()
 
 for (i in seq_along(endangered_table)) {
   # Split the 'criteria' column into 'type' and 'roman' columns using a colon as the separator
   new_col[[i]] <- str_split_fixed(endangered_table$Criteria[i], ":", 2)
+  #assign the type column as the value achieved in new_col list column 1
   endangered_table$Type[i] <- new_col[[i]][, 1]
+  #assign the roman column as the value achieved in new_col list column 2
   endangered_table$roman[i] <- new_col[[i]][, 2]
 }
 
 
 # Out of loop-Remove the original column
 endangered_table$Criteria <- NULL
-
 
 
 # Out of loop- Rename roman column to criteria
@@ -312,7 +314,7 @@ colnames(endangered_table)[which(colnames(endangered_table) == "roman")] <- "Cri
 # variable.
 
 for (i in seq_along(endangered_table$`Areaha (acre)`)) {
-  # replace missing values with NA
+  # replace missing values of area column with NA
   endangered_table$`Areaha (acre)`[i] <- gsub("—", NA, endangered_table$`Areaha (acre)`[i])
   # keep only text within bracket which has acre values
   if (!is.na(endangered_table$`Areaha (acre)`[i])) {
@@ -322,6 +324,7 @@ for (i in seq_along(endangered_table$`Areaha (acre)`)) {
   }
 }
 
+#check the result
 endangered_table
 
 # out of loop-change column name
