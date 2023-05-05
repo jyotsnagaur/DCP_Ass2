@@ -219,8 +219,12 @@ colnames(selection_criteria[[2]]) <- "Natural"
 # Q1 From the table containing the endangered sites, remove the undesired variables:
 # Image and Refs.
 
+# creating a vector for the column names image and refs in order to get their index numbers using
+#which function. After getting their index number we just need to subset the data frame 
+#where negative sign in front of column index means that the stated column index is to be removed
 endangered_table <- endangered_table[, -which(names(endangered_table) %in% c("Image", "Refs"))]
 
+#check the result
 view(endangered_table)
 
 # -----------------------------QUESTION 2---------------------------------------
