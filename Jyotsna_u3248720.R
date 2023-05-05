@@ -125,34 +125,42 @@ view(legend_table)
 # Q3 Scrape the endangered list, which contains the current listed sites.
 
 
-
+#using the pipe function and html_table function from rvest package to extract only 
+#the tables of the webpage
 tables <- webpage %>% html_table(fill = TRUE)
 
-
+#labelling the table as endangered table and accessing the 2nd table from the list 
+#of tables, which is what is desired
 endangered_table <- tables[[2]]
 
-
+#check the achieved table
 print(endangered_table)
 
 # -----------------------------QUESTION 4---------------------------------------
 
 # Q4 Scrape all available hyperlinks in the url.
 
+#using the html_nodes function from rvest, we extract the content within the 
+#identifier 'a' and then extract the hyperlink text references using 'href' as the identifier
 all_url <- webpage %>%
   html_nodes("a") %>%
   html_attr("href")
 
 
-# Extract the link text
+# Extract the link text again by using the node 'a' as identifier and keeping all 
+#text only and not the link by using the html_text function
 link_text <- webpage %>%
   html_nodes("a") %>%
   html_text()
 
-
+#creating a data frame of the achieved content and their links
 scrape_all <- data.frame(CONTENT = link_text, URL = all_url)
+#resulting in 1416 observations
 
 #removing extra rows
-#
+#some rows do contain citation link texts which might work by adding a domain name to them
+#hence I am removing only the row 23 with only single character(#)
+scrape_all <- scrape_all[-23, ]
 
 # -----------------------------QUESTION 5---------------------------------------
 
