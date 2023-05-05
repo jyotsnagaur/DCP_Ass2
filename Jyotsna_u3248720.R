@@ -107,23 +107,17 @@ rownames(legend_table)[5] <- "Year (WHS):"
 # \\s matches empty space in the beginning
 legend_table[, 1] <- sub("^\\w+:\\s", "", legend_table[, 1])
 
-#removing extra text from 5th row using gsub which substitutes given pattern with 
-#empty space here
-# Split the string into words using the space character as the delimiter
-legend_table[5, 1] <- str_split(legend_table[5, 1], " ")
-# Select all words from the third word to the end of the string
-selected_words <- word(legend_table[5, 1], 3:length(words))
-# Concatenate the selected words back into a string using the space character as a separator
-concatenated_words <- str_c(selected_words, collapse = " ")
-# Remove any leading or trailing whitespace from the resulting string
-legend_table[5, 1] <- str_trim(concatenated_words)
+#removing extra text from 5th row using sub and regex
+legend_table[5, 1] <- sub("Year \\(WHS\\):", "", legend_table[5, 1])
 
+#trimming any whitespaces in the column
+legend_table[,1] <- str_trim(legend_table[,1], side = "both")
 
 #change column name to 'Description of Table Legend'
+colnames(legend_table) <- "Description of Table Legend"
 
-
-
-
+#check final result
+view(legend_table)
 
 
 # -----------------------------QUESTION 3---------------------------------------
