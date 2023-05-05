@@ -27,7 +27,7 @@
 # load library
 library(tidyverse)
 library(rvest)
-# library(stringr) #stringr is a part of tidyverse
+# library(stringr) 
 
 # ******************************  PART1 ****************************************
 
