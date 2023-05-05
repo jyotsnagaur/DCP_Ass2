@@ -59,45 +59,67 @@ table_legend <- webpage %>%
 required <- table_legend[2]
 
 
-#
+#the legend text is in the form of continuous lines. We need to split the text
 # split the single string into multiple strings using the new lines (\n)
+#using strsplit function from stringr
 legend_table <- strsplit(required, "\\n")
 #legend_table #checking the result
 
 
-# convert string to a table
+#Making the legend presentable by converting it to a table
+# convert string to a table using the matrix function. We need only 1 column 
+#we need to create the table observations according to the rows
 legend_table <- matrix(unlist(legend_table), ncol = 1, byrow = TRUE)
-View(legend_table)
+#View(legend_table) #checking the result
 
 
-# removing superscript text in square brackets
+# removing superscript text in square brackets which came as part of citations 
+# on the given webpage in row 1
 
-nchar(legend_table[1, ])
-legend_table[1, ] <- substring(legend_table[1, ], 1, 47) # nchar-4
+# nchar(legend_table[1, ]) gives the number of characters in the string of 1st row
+# using substring function we specify start index of desired subsetted string
+#we keep the first character so start=1 which is the second argument
+#we remove the last 3 characters containing citation text so end=total characters in string
+#minus 4 to achieve the desired index
+legend_table[1, ] <- substring(legend_table[1, ], 1, (nchar(legend_table[1, ])-4)) 
 
-nchar(legend_table[2, ])
-legend_table[2, ] <- substring(legend_table[2, ], 1, 95) # nchar-6
+# removing superscript text in square brackets which came as part of citations 
+# on the given webpage in row 2
 
-# change row names using stringr::word
 
+# nchar(legend_table[2, ]) gives the number of characters in the string of 2nd row
+# using substring function we specify start index of desired subsetted string
+#we keep the first character so start=1 which is the second argument
+#we remove the last 63 characters containing citation text so end=total characters in string
+#minus 6 to achieve the desired index
+legend_table[2, ] <- substring(legend_table[2, ], 1, (nchar(legend_table[2, ])-6)) 
+
+
+# change row names using stringr::word to achieve the rownames as the legend entities
 rownames(legend_table) <- word(legend_table[, 1], 1)
+#editing the rowname with year observation
+rownames(legend_table)[5] <- "Year (WHS):"
 
 # remove first word of observations using regular expression
 # ^ is an anchor that matches the beginning of the string.
 # \\w+ matches one or more word characters (letters, digits, or underscores).
 # : matches the colon character.
 # \\s matches empty space in the beginning
-
 legend_table[, 1] <- sub("^\\w+:\\s", "", legend_table[, 1])
-legend_table
-# CHK THIS-------------------------------------------------------------------------------
-# input_string <- "Name: as listed by the World Heritage Committee"
 
-# remove the first word
-# output_string <- str_replace(input_string, "^\\w+:\\s", "")
+#removing extra text from 5th row using gsub which substitutes given pattern with 
+#empty space here
+# Split the string into words using the space character as the delimiter
+legend_table[5, 1] <- str_split(legend_table[5, 1], " ")
+# Select all words from the third word to the end of the string
+selected_words <- word(legend_table[5, 1], 3:length(words))
+# Concatenate the selected words back into a string using the space character as a separator
+concatenated_words <- str_c(selected_words, collapse = " ")
+# Remove any leading or trailing whitespace from the resulting string
+legend_table[5, 1] <- str_trim(concatenated_words)
 
-# print the updated string
-# print(output_string)
+
+#change column name to 'Description of Table Legend'
 
 
 
@@ -135,6 +157,8 @@ link_text <- webpage %>%
 
 scrape_all <- data.frame(CONTENT = link_text, URL = all_url)
 
+#removing extra rows
+#
 
 # -----------------------------QUESTION 5---------------------------------------
 
